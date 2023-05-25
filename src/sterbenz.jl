@@ -98,7 +98,7 @@ function sterbenz(a,b,c)
                  x2 = y2*2.0^K
                  return (min(x1,x2),max(x1,x2))
               end
-              return (-b/(2*a))
+               return  (-b2/(2*a2))*2.0^K
            end
            dM = ecp & ~1 # dM = floor(ecp/2)*2
            M = dM>>1     # M = dM/2

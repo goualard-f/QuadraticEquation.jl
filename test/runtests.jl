@@ -44,5 +44,6 @@ stack = CrayonStack()
 
 #include("systematic_tests.jl")
 #include("fibonacci_tests.jl")
-include("specific.jl")
+include("fibonacci_tests_randomized.jl")
+#include("specific.jl")
 

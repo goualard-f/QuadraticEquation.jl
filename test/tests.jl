@@ -47,7 +47,7 @@ noRealSolutionTests = Dict((2,0,3)=>(NaN64, NaN64),
                            (-2.0^600,0,-2.0^600)=>(NaN64, NaN64))
 
 degenerateInputTests = Dict(# a==0, b==0, c==0
-                            (0,0,0)=>(-Inf64,Inf64),
+                            (0,0,0)=>(Inf64,-Inf64),
                             # a==0, b==0, c!=0
                             # Put into nanTests
                             # a==0, b!=0, c==0
@@ -94,3 +94,6 @@ twoSolutionsTests = Dict(
     #<
 )
 
+oneSolutionTests = Dict(
+    (2.0^1023,2.0,2.0^-1023)=>(-2.0^-1023)
+)

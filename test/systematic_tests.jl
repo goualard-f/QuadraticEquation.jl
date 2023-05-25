@@ -162,6 +162,33 @@ for (name, fun) in methods
     print(pop!(stack))
     println(pop!(stack))
 
+    ## oneSolutionTests
+    println(push!(stack,Crayon(foreground=:magenta)),"[oneSolutionTests]")
+    print(pop!(stack))
+    wrongNumberOfSolutions = 0
+    wrongSolutions = 0
+    goodSolutions = 0
+    for (input, solutions) in oneSolutionTests
+        x = fun(input...)
+        if length(x) != 1
+            wrongNumberOfSolutions += 1
+            if !(x[1] ≈ solutions) && !(x[2] ≈ solutions)
+                println(stderr,"$input: $x / $(solutions)")
+                wrongSolutions += 1
+            end
+        else
+            if !(x ≈ solutions)
+                wrongSolutions += 1
+                println(stderr,"$input: $x / $(solutions)")
+            else
+                goodSolutions += 1
+            end
+        end
+    end
+    print(push!(stack,Crayon(foreground=:green)),goodSolutions)
+    print(push!(stack,Crayon(foreground=:red))," $wrongNumberOfSolutions $wrongSolutions")
+    print(pop!(stack))
+    println(pop!(stack))
     
     ## twoSolutionsTests
     println(push!(stack,Crayon(foreground=:magenta)),"[twoSolutionsTests]")

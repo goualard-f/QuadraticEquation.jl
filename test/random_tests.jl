@@ -1,4 +1,4 @@
-# specific --
+# random_tests --
 #
 #	Copyright 2023 Nantes University, France.
 #
@@ -18,16 +18,11 @@
 #	GNU Lesser General Public License along with the QuadraticEquation Library.
 # If not,	see https://www.gnu.org/licenses/.
 
-#params = (1.0,sqrt(4/5),1/5)
-#params = (2.0^1023, 2, 2.0^-1023)
-#params = (8944394323791464, -11055879401769514, 3416454622906707)
-params = (3,-4,1)
-#params = 2.0^600 .*(1,1+2.0^-52,0.25+2.0^-53)
-#params = 2.0^-550 .*(1.0,0.25,1.0)
-#params = (1.0,0.25,1.0)
+# Generating random tests
 
-println("Parameters: $params")
+
 for (name, fun) in methods
-    y = fun(params...)
-    println("$name... $y")
+    println(push!(stack,Crayon(foreground=:blue)),"Testing $name...")
+    print(pop!(stack))
+    
 end
