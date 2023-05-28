@@ -18,6 +18,8 @@
 #	GNU Lesser General Public License along with the QuadraticEquation Library.
 # If not,	see https://www.gnu.org/licenses/.
 
+export sign1
+
 """
     sign(x)
 

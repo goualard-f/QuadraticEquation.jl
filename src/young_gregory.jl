@@ -87,7 +87,7 @@ function young_gregory(a,b,c)
                         return (-Inf64,Inf64)
                     else
                         x1 = Inf64
-                        x2 = (-2*C/B)/(1+sqrt(1-(4*a*c)/b^2))
+                        x2 = (-2*c/b)/(1+sqrt(1-(4*a*c)/b^2))
                         return (x2,x1)
                     end
                 else

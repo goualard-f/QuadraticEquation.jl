@@ -19,10 +19,12 @@
 # If not,	see https://www.gnu.org/licenses/.
 
 # Generating random tests
+# this version does not store the parameters of the quadratic beforehand. As
+# a consequence, we may test much more triplets but each method handles different
+# inputs.
 
 # Generating `n` random coefficient triplets
-n = 1_000_000
-
+n = 200_000_000
 
 """
     Generate a 64-bit float randomly.
@@ -67,25 +69,6 @@ function roots(a,b,c)
     end
 end
 
-P = []
-nparams = 0
-while nparams != n
-    (a,b,c) = (randfloat64(1),randfloat64(0),randfloat64(-1))
-    X = roots(a,b,c)
-    if X != nothing
-        if length(X) == 1 && X != 0 && floatmin(Float64) <= abs(X) <= floatmax(Float64)
-            global nparams += 1
-            push!(P,(a,b,c,X))
-        else
-            if X[1] != 0.0 && X[2]!=0.0 &&
-               floatmin(Float64) <= abs(X[1]) <= floatmax(Float64) &&
-               floatmin(Float64) <= abs(X[2]) <= floatmax(Float64)
-                global nparams += 1
-                push!(P,(a,b,c,X))
-            end
-        end
-    end
-end
 
 # Searching worst error
 for (name, fun) in methods
@@ -95,37 +78,64 @@ for (name, fun) in methods
     worstError = 0.0
     wrongSolutions = 0
     overflows = 0
-    for (a,b,c,X) in P
-        let x = 0.0
-            try
-                x = fun(a,b,c)
-            catch e
-                #println("Exception catched: ($a,$b,$c)")
-                #exit(0)
-                wrongSolutions += 1
-                continue
-            end
-            if x == nothing || length(x) != length(X)
-                wrongSolutions += 1
-                #println(">> $((a,b,c)) --> $X / $x")
-                #exit(1)
-            else
-                if length(x) == 1
-                    if !isinf(x)
-                        error = abs(X-x)/abs(X)
+    nparams = 0
+    while nparams != n
+        # Generating an eligible triplet of parameters for a quadratic
+        eligible = false
+        let (a,b,c,X) = (0.0,0.0,0.0,big(0.0))
+            while !eligible
+                (a,b,c) = (randfloat64(1),randfloat64(0),randfloat64(-1))
+                X = roots(a,b,c)
+                if X != nothing
+                    if length(X) == 1 && X != 0.0 &&
+                        floatmin(Float64) <= abs(X) <= floatmax(Float64)
+                        nparams += 1
+                        eligible = true
                     else
-                        overflows += 1
-                    end
-                else
-                    if !isinf(x[1]) && !isinf(x[2])
-                        error = max(abs(X[1]-x[1])/abs(X[1]),abs(X[2]-x[2])/abs(X[2]))
-                    else
-                        overflows += 1
-                        error = 0.0
+                        if X[1] != 0.0 && X[2]!=0.0 &&
+                            floatmin(Float64) <= abs(X[1]) <= floatmax(Float64) &&
+                            floatmin(Float64) <= abs(X[2]) <= floatmax(Float64)
+                            nparams += 1
+                            eligible = true
+                        end
                     end
                 end
-                if worstError < error 
-                    worstError = error
+            end
+            let x = 0.0
+                try
+                    x = fun(a,b,c)
+                catch e
+                    #println("Exception catched: ($a,$b,$c)")
+                    #exit(0)
+                    wrongSolutions += 1
+                    continue
+                end
+                if x == nothing || length(x) != length(X)
+                    #println("Exception catched: $((a,b,c)) -> $X / $x")
+                    #exit(0)
+                    wrongSolutions += 1
+                else
+                    if length(x) == 1
+                        if !isinf(x)
+                            error = abs(X-x)/abs(X)
+                        else
+                            #println("Exception catched: $((a,b,c)) -> $X / $x")
+                            #exit(0)
+                            overflows += 1
+                        end
+                    else
+                        if !isinf(x[1]) && !isinf(x[2])
+                            error = max(abs(X[1]-x[1])/abs(X[1]),abs(X[2]-x[2])/abs(X[2]))
+                        else
+                            #println("Exception catched: $((a,b,c)) -> $X / $x")
+                            #exit(0)
+                            overflows += 1
+                            error = 0.0
+                        end
+                    end
+                    if worstError < error
+                        worstError = error
+                    end
                 end
             end
         end

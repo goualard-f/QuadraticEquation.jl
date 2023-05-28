@@ -170,7 +170,10 @@ for (name, fun) in methods
     goodSolutions = 0
     for (input, solutions) in oneSolutionTests
         x = fun(input...)
-        if length(x) != 1
+        if x == nothing
+            wrongSolutions += 1
+            wrongNumberOfSolutions += 1
+        elseif length(x) != 1
             wrongNumberOfSolutions += 1
             if !(x[1] ≈ solutions) && !(x[2] ≈ solutions)
                 println(stderr,"$input: $x / $(solutions)")
@@ -198,7 +201,10 @@ for (name, fun) in methods
     goodSolutions = 0
     for (input, solutions) in twoSolutionsTests
         x = fun(input...)
-        if length(x) != 2
+        if x == nothing
+            wrongSolutions += 1
+            wrongNumberOfSolutions += 1
+        elseif length(x) != 2
             wrongNumberOfSolutions += 1
             if !(x ≈ solutions[1]) && !(x ≈ solutions[2])
                 println(stderr,"$input: $x / $(solutions[1]) $(solutions[2])")
