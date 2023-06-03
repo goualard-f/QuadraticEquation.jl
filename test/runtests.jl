@@ -39,7 +39,8 @@ else
                  "gsl","higham","jenkins","kahan","mastronardi_van_dooren",
                  #"middlebrook",
                  "naive","nievergelt","nonweiler",
-                 "numerical_recipes","panchekha_PLDI15","panchekha_racket",
+                 "numerical_recipes","panchekha_PLDI15",
+                 "panchekha_racket", "panchekha_racket_corrected", 
                  "rust","scilab","sterbenz","young_gregory")
 end
 
@@ -70,9 +71,9 @@ end
 
 stack = CrayonStack()
 
-#include("systematic_tests.jl")
+include("systematic_tests.jl")
 #include("fibonacci_tests.jl")
-#include("fibonacci_tests_randomized.jl")
+include("fibonacci_tests_randomized.jl")
 include("random_tests.jl")
 #include("random_tests_long.jl")
 #include("specific.jl")
