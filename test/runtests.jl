@@ -41,7 +41,7 @@ else
                  "naive","nievergelt","nonweiler",
                  "numerical_recipes","panchekha_PLDI15",
                  "panchekha_racket", "panchekha_racket_corrected", 
-                 "rust","scilab","sterbenz","young_gregory")
+                 "rust","scilab","sterbenz","young_gregory","pharr_jakob_humphreys")
 end
 
 methods = []
@@ -72,9 +72,9 @@ end
 stack = CrayonStack()
 
 include("systematic_tests.jl")
-#include("fibonacci_tests.jl")
+include("fibonacci_tests.jl")
 include("fibonacci_tests_randomized.jl")
 include("random_tests.jl")
-#include("random_tests_long.jl")
-#include("specific.jl")
+include("random_tests_long.jl")
+include("specific.jl")
 
